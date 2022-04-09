@@ -1,6 +1,6 @@
 ## IP地址查询-站长查询 百度网盟杀手
 
-> [mip_baidu_killer.js](https://github.com/wuuconix/scripts/blob/main/mip_baidu_killer.js )
+> [mip_baidu_killer.js](https://github.com/wuuconix/scripts/blob/main/mip_baidu_killer/mip_baidu_killer.js )
 
 解决问题：在使用[IP地址查询-站长查询](http://mip.chinaz.com/)的时候，会弹出百度网盟广告，影响观感。
 

@@ -1,6 +1,6 @@
 ## 知乎杀手
 
-> [zhihu_killer.js](https://github.com/wuuconix/scripts/blob/main/zhihu_killer.js)
+> [zhihu_killer.js](https://github.com/wuuconix/scripts/blob/main/zhihu_killer/zhihu_killer.js)
 
 解决问题：知乎在用户没有登录的情况下会弹出登录框 影响用户阅读
 
