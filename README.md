@@ -3,7 +3,7 @@
 
 ## 知乎杀手
 
-> zhihu_killer.js
+> [zhihu_killer.js](https://github.com/wuuconix/scripts/blob/main/zhihu_killer.js)
 
 通过MutationObserver检测body的变化，每次变化查看有没有弹出登录框。
 
@@ -13,8 +13,10 @@
 
 已经下登录的情况
 
-![](assets/%E5%B7%B2%E7%BB%8F%E7%99%BB%E5%BD%95.jpg)
+![已经登录.jpg](assets/%E5%B7%B2%E7%BB%8F%E7%99%BB%E5%BD%95.jpg)
 
 还没有登录的情况
 
-![](assets/%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD.jpg)
+![自动关闭.jpg](assets/%E8%87%AA%E5%8A%A8%E5%85%B3%E9%97%AD.jpg)
+
+[Greasy Fork 下载链接](https://greasyfork.org/zh-CN/scripts/443070-zhihu-killer)
