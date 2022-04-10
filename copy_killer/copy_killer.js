@@ -13,14 +13,14 @@
 
 (function() {
     'use strict';
-	document.addEventListener('copy',function(e){
-		let clipboardData = e.clipboardData || window.clipboardData;
-		if(!clipboardData)
+    document.addEventListener('copy',function(e){
+        let clipboardData = e.clipboardData || window.clipboardData;
+        if(!clipboardData)
             return ;
-		let text = window.getSelection().toString(); //手动得到用户选择区域并放入剪切版中
-		if(text){
-			e.preventDefault();
-			clipboardData.setData('text/plain', text)
-		}
+        let text = window.getSelection().toString(); //手动得到用户选择区域并放入剪切版中
+        if(text){
+            e.preventDefault();
+            clipboardData.setData('text/plain', text)
+        }
 	})
 })();
