@@ -4,7 +4,7 @@
 
 解决问题：知乎在用户没有登录的情况下会弹出登录框 影响用户阅读
 
-![知乎登录框.jpg](https://cdn.jsdelivr.net/gh/wuuconix/scripts@main/zhihu_killer/assets/%E7%9F%A5%E4%B9%8E%E7%99%BB%E5%BD%95%E6%A1%86.jpg)
+![知乎登录框.jpg](https://s2.loli.net/2022/04/10/74DlxmYtBiFMOHQ.jpg)
 
 通过MutationObserver检测body的变化，每次变化查看有没有弹出登录框，若有则自动点击实现关闭。
 
