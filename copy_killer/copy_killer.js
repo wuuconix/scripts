@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         copy_killer.js
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  删除网站复制时讨厌的声明 目前支持网站 Leetcode | CSDN
 // @author       wuuconix
 // @match        https://leetcode-cn.com/problems/*
@@ -14,12 +14,10 @@
 (function() {
     'use strict';
     document.addEventListener('copy',function(e){
-        let clipboardData = e.clipboardData || window.clipboardData;
-        if(!clipboardData)
-            return ;
-        let text = window.getSelection().toString(); //手动得到用户选择区域并放入剪切版中
-        if(text){
-            e.preventDefault();
+        let clipboardData = e.clipboardData || window.clipboardData
+        let text = clipboardData.getData("text") //剪切板里的内容
+        if(text) {
+            e.preventDefault(); //阻止原来的事件，原来的事件会给复制内容后面加上声明
             clipboardData.setData('text/plain', text)
         }
 	})
