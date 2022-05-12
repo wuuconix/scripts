@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         uooconline_killer.js
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  优课在线免受暂停的干扰 + 每天凌晨自动进入学习页面实现签到
 // @author       wuuconix
 // @match        http://www.uooconline.com/*
@@ -20,6 +20,7 @@
             start = temp
             start.click() //自动点击播放按钮
             video = document.querySelector("video") //更新视频标签
+            localStorage.setItem("url", window.location.href)
             video.addEventListener("pause", () => {
                 video.play()
                     .then(() => console.log("视频重新播放成功"))
@@ -36,7 +37,7 @@
             console.log(`现在的时间是: ${new Date()}`)
             console.log(`将会在24点30分，${waitMin}分钟后签到`)
             setTimeout(() => {
-                enterButton.click()
+                window.location.replace(localStorage.getItem("url")) //切换页面为上次的视频页面 从而实现播放后自动签到
             }, waitMin * 60 * 1000)
             observer.disconnect()
         }
