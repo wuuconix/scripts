@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.2
 // @description  ICP备案网自动域名爬取
-// @author       You
+// @author       wuuconix
 // @match        https://beian.miit.gov.cn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=beian.miit.gov.cn
 // @grant        none
