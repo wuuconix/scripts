@@ -8,4 +8,4 @@
 
 利用MutationObserver获得那个div，然后在利用另一个MutationObserver来监听div属性的变化，一变化就把它的heihgt设置为100%
 
-[Greasy Fork 下载链接](https://greasyfork.org/zh-CN/scripts/443108-copy-killer-js)
+[Greasy Fork 下载链接](https://greasyfork.org/zh-CN/scripts/446352-aliyunpan-killer-js)
