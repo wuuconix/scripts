@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         beian-killer.js
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  ICP备案网自动域名爬取
 // @author       wuuconix
 // @match        https://beian.miit.gov.cn/*
@@ -10,32 +10,55 @@
 // @license      MIT
 // ==/UserScript==
 
+/* 输入睡眠的秒数 */
+const sleep = (time) => new Promise((resolve) => {
+    setTimeout(resolve, time * 1000)
+})
+
+const domains = new Set()
 const start = async () => {
-    let sleep = (time) => new Promise((resolve) => {
-        setTimeout(resolve, time * 1000)
-    })
-    let pages = Number(document.querySelector(".number:last-child").textContent)
+    const switchLi = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > span.el-pagination__sizes > div > div.el-input.el-input--mini.el-input--suffix")
+    switchLi.click()
+    await sleep(1)
+    const selectedLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item.selected.hover")
+    const fortyLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item:last-child")
+    if (selectedLi != fortyLi) {
+        fortyLi.click()
+        console.log("自动切换到40条/页")
+    } else {
+        console.log("已经处于40条/页")
+    }
+    await sleep(5)
+    switchLi.click()
+    const nextBtn = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > button.btn-next")
+    const pageLi = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > ul > li:last-child")
+    const pages = Number(pageLi.textContent) //页数
     console.log(`一共有${pages}页`)
-    let nextBtn = document.querySelector(".btn-next")
-    let result = ""
-    let index = 0
     for (let i = 0; i < pages; i++) {
         console.log(`现在是第${i + 1}页`)
-        let btns = document.querySelectorAll(".el-button.el-button--primary.el-button--small") //每条记录的查看详情按钮
-        for (let j = 0; j < btns.length; j++) {
-            let btn = btns[j]
+        const detailBtns = document.querySelectorAll("#app > div > section > div > div > div.listcont > div > div.el-table.el-table--fit.el-table--border.el-table--enable-row-hover.el-table--enable-row-transition > div.el-table__body-wrapper.is-scrolling-none > table > tbody > tr > td.el-table_1_column_7.is-center > div > button")
+        for (let j = 0; j < detailBtns.length; j++) {
+            const btn = detailBtns[j]
             btn.click()
             await sleep(1)
-            while (!document.querySelector("div.details div.tableA:nth-of-type(2) li div[style]")) {
-                await sleep()
+            const domainDiv = document.querySelector("#app > div > section > div > div > div:nth-child(2) > div:nth-child(2) > ul > li:nth-child(1) > div:nth-child(4)")
+            if (!domainDiv) { //2秒中还没有加载出来肯定是遇到了 网站恶意检测，故重新进入此页的详情页面
+                console.log("检测到网站的恶意检测")
+                j--
+                continue
             }
-            let domain = document.querySelector("div.details div.tableA:nth-of-type(2) li div[style]").textContent
-            result = `${result}\n${domain}`
-            console.log(`${index++}: ${domain}`)
+            const domain = domainDiv.textContent
+            domains.add(domain) //set自动去重
+            console.log(`${i * 40 + j + 1}: ${domain}`)
         }
-        console.log(result)
-        nextBtn.click()
-        await sleep(5)
+        if (i == pages - 1) {
+            console.log(`爬虫完毕! 总共爬取 ${i * 40 + detailBtns.length}个域名，去重和得到 ${domains.size} 个有效域名`)
+            console.log([...domains].join("\n"))
+        } else {
+            console.log([...domains].join("\n"))
+            nextBtn.click()
+            await sleep(5) //到下一页等待5秒中
+        }
     }
 }
 
@@ -50,12 +73,13 @@ const observer = new MutationObserver(() => {
         stand.innerHTML = ""
         stand.textContent = "点击开始"
         stand.onclick = (e) => {
-            e.preventDefault();
+            e.preventDefault()
             start()
         }
         document.querySelector(".float-box.float-boxA").remove() //删除多余按钮
+        document.querySelector("div.box-hover").remove()
         observer.disconnect()
     }
 });
 
-observer.observe(document.body, { childList: true });
+observer.observe(document.body, { childList: true })
