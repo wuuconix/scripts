@@ -62,24 +62,25 @@ const start = async () => {
     }
 }
 
-const observer = new MutationObserver(() => {
-    let searchList = document.querySelector(".search")
-    if (searchList) {
-        let stand = document.querySelector(".el-button.float-box.el-button--default.el-popover__reference") //替身
-        stand.style.width = "100px"
-        stand.style.height = "100px"
-        stand.style.setProperty("background-color", "red", "important")
-        stand.style.setProperty("color", "white", "important")
-        stand.innerHTML = ""
-        stand.textContent = "点击开始"
-        stand.onclick = (e) => {
-            e.preventDefault()
-            start()
-        }
-        document.querySelector(".float-box.float-boxA").remove() //删除多余按钮
-        document.querySelector("div.box-hover").remove()
-        observer.disconnect()
-    }
-});
+window.start = start
+// const observer = new MutationObserver(() => {
+//     let stand = document.querySelector("#app > div > div.float-box.float-boxA")
+//     if (stand) {
+//         console.log(stand)
+//         stand.style.width = "100px"
+//         stand.style.height = "100px"
+//         stand.style.setProperty("background-color", "red", "important")
+//         stand.style.setProperty("color", "white", "important")
+//         stand.innerHTML = ""
+//         stand.textContent = "点击开始"
+//         stand.onclick = (e) => {
+//             e.preventDefault()
+//             start()
+//         }
+//         document.querySelector(".float-box.float-boxA").remove() //删除多余按钮
+//         document.querySelector("div.box-hover").remove()
+//         observer.disconnect()
+//     }
+// });
 
-observer.observe(document.body, { childList: true })
+// observer.observe(document.body, { childList: true })
