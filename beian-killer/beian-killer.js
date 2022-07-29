@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         beian-killer.js
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  ICP备案网自动域名爬取
 // @author       wuuconix
 // @match        https://beian.miit.gov.cn/*
@@ -21,14 +21,15 @@ const start = async () => {
     switchLi.click()
     await sleep(1)
     const selectedLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item.selected.hover")
+    const tenthLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item")
     const fortyLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item:last-child")
     if (selectedLi != fortyLi) {
         fortyLi.click()
         console.log("自动切换到40条/页")
+        await sleep(5)
     } else {
         console.log("已经处于40条/页")
     }
-    await sleep(5)
     switchLi.click()
     const nextBtn = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > button.btn-next")
     const pageLi = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > ul > li:last-child")
@@ -53,7 +54,14 @@ const start = async () => {
         }
         if (i == pages - 1) {
             console.log(`爬虫完毕! 总共爬取 ${i * 40 + detailBtns.length}个域名，去重和得到 ${domains.size} 个有效域名`)
-            console.log([...domains].join("\n"))
+            const title = document.querySelector("#app > div > header > div.search > div > div > input").value
+            const result = `# ${title}\n\n<details>\n${[...domains].join("\n")}\n</details>\n\n`
+            console.log(result)
+            await navigator.clipboard.writeText(result)
+            console.log("成功复制进入剪切板")
+            document.querySelector("#app > div > header > div.search > div > div > input").value = "成功复制进入剪切板"
+            domains.clear()
+            tenthLi.click()
         } else {
             console.log([...domains].join("\n"))
             nextBtn.click()
@@ -63,24 +71,22 @@ const start = async () => {
 }
 
 window.start = start
-// const observer = new MutationObserver(() => {
-//     let stand = document.querySelector("#app > div > div.float-box.float-boxA")
-//     if (stand) {
-//         console.log(stand)
-//         stand.style.width = "100px"
-//         stand.style.height = "100px"
-//         stand.style.setProperty("background-color", "red", "important")
-//         stand.style.setProperty("color", "white", "important")
-//         stand.innerHTML = ""
-//         stand.textContent = "点击开始"
-//         stand.onclick = (e) => {
-//             e.preventDefault()
-//             start()
-//         }
-//         document.querySelector(".float-box.float-boxA").remove() //删除多余按钮
-//         document.querySelector("div.box-hover").remove()
-//         observer.disconnect()
-//     }
-// });
+const observer = new MutationObserver(() => {
+    let stand = document.querySelector("#app > div > div.float-box.float-boxA")
+    if (stand) {
+        console.log(stand)
+        stand.style.width = "100px"
+        stand.style.height = "100px"
+        stand.style.setProperty("background-color", "red", "important")
+        stand.style.setProperty("color", "white", "important")
+        stand.innerHTML = ""
+        stand.textContent = "点击开始"
+        stand.onclick = (e) => {
+            e.preventDefault()
+            start()
+        }
+        observer.disconnect()
+    }
+});
 
-// observer.observe(document.body, { childList: true })
+observer.observe(document.body, { childList: true })
