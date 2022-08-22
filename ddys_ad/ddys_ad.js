@@ -11,10 +11,7 @@
 // ==/UserScript==
 
 const style = document.createElement("style")
-style.innerHTML = `#sajdhfbjwhe {
-    display: none;
-}
-#iaujwnefhw {
+style.innerHTML = `#sajdhfbjwhe, #iaujwnefhw, #fkasjgf {
     display: none;
 }`
 document.head.appendChild(style)
