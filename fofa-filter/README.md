@@ -1,15 +1,16 @@
-# fofa-filter
+# fofa白嫖所有资产
 
-白嫖fofa所有数据 小脚本
+**解决问题**：
 
-[Greasy Fork安装链接](https://greasyfork.org/zh-CN/scripts/451165-fofa-filter)
+fofa对于普通用户只开放前60条数据的查看权限，如果目标资产大于60，我们将无法查看60条之后的资产。
 
-![image](https://tva2.sinaimg.cn/large/007YVyKcly1h62zxtc7g7j30gr0aljtb.jpg)
+**使用方法**:
 
-![image](https://tva2.sinaimg.cn/large/007YVyKcly1h6300386ddj312b0p4tkf.jpg)
+![image](https://tva3.sinaimg.cn/large/007YVyKcly1h630stugroj30fv02t74z.jpg)
 
-<details>
-    <summary>脚本原理</summary>
+点击这把剑，即可把这一页的十条记录过滤掉。
+
+**脚本原理**：
 
 如果我们需要利用fofa来探测某个域名的子域名们，一般是这样的
 
@@ -34,8 +35,9 @@ domain="bilibili.com" && host!="a.bilibili.com" && host!="b.bilibili.com"
 总共60条记录，我们去掉了10条旧纪录，自然会有10条新纪录可以供我们查看。
 
 以此类推，我们将获得fofa数据库中的所有数据。
-</details>
 
+**Greasy Fork & Github**:
 
+https://greasyfork.org/zh-CN/scripts/451165-fofa-filter
 
-
+https://github.com/wuuconix/scripts/tree/main/fofa-filter
