@@ -6,35 +6,41 @@ fofa对于普通用户只开放前60条数据的查看权限，如果目标资�
 
 **使用方法**:
 
-![image](https://tva3.sinaimg.cn/large/007YVyKcly1h630stugroj30fv02t74z.jpg)
+![image](https://tva1.sinaimg.cn/large/007YVyKcly1h650mbwuqwj30gz02sdgn.jpg)
 
-点击这把剑，即可把这一页的十条记录过滤掉。
+点击左边这把匕首，即可把这一页的十条记录利用`host`高级搜索语法过滤掉。
 
-**脚本原理**：
+![image](https://tva4.sinaimg.cn/large/007YVyKcly1h650nv5xffj30hf02y0ti.jpg)
 
-如果我们需要利用fofa来探测某个域名的子域名们，一般是这样的
+点击右边这把双剑，利用了`title`高级搜索语法可能能够过滤掉更多记录，因为fofa中很多记录的title都是相同的，所以这把双剑的威力更大。
 
-```
-domain="bilibili.com"
-```
+**例子**
 
-然后比如第一页返回了 `a.bilibili.com` 和 `b.bilibili.com` 等10条数据。
-
-如果你需要对这些子域名进行渗透测试的话，现在就去渗透吧！
-
-渗透测试完毕后，这一页的10条数据实际上对你已经没用了，因为你已经利用好了，但是它仍然占据着 60条（fofa非会员享受的数据数量） 中的10条。
-
-我们可以使用
+初始搜索语法
 
 ```
-domain="bilibili.com" && host!="a.bilibili.com" && host!="b.bilibili.com"
+domain="gz-icloud.com.cn" && status_code="200"
 ```
 
-的搜索语法把这一页的十条数据过滤掉。
+一共134条记录。
 
-总共60条记录，我们去掉了10条旧纪录，自然会有10条新纪录可以供我们查看。
+点击左边的匕首后，语法**自动**填充为
 
-以此类推，我们将获得fofa数据库中的所有数据。
+```
+domain="gz-icloud.com.cn" && status_code="200" && host!="qgh.gz-icloud.com.cn" && host!="safe.gz-icloud.com.cn:8061" && host!="gh.gz-icloud.com.cn:8061" && host!="cas.gz-icloud.com.cn" && host!="mall.gz-icloud.com.cn:8092" && host!="sso.gz-icloud.com.cn:8081" && host!="safe.gz-icloud.com.cn:8081" && host!="mall.gz-icloud.com.cn:8096" && host!="safe.gz-icloud.com.cn" && host!="sso.gz-icloud.com.cn:8094"
+```
+
+记录减少为123条。
+
+点击右边的双剑后，语法**自动**填充为
+
+```
+domain="gz-icloud.com.cn" && status_code="200" && title!="黔工汇" && title!="MinIO Console" && title!="军民融合云平台" && title!="工业互联网金融" && title!="贵阳国家高新区科技计划项目申报系统" && title!="面向贵阳市特定区域工业互联网平台" && title!="贵州工业云人才综合平台"
+```
+
+记录减少为93条。
+
+可见，只要我们不断点击，最终可以得到fofa数据库中的所有记录。
 
 **Greasy Fork & Github**:
 
