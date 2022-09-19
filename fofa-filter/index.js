@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         fofa-filter
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  fofa过滤器
 // @author       Wuuconix
 // @match        https://fofa.info/result*
@@ -11,33 +11,24 @@
 // ==/UserScript==
 
 setTimeout(() => {
-  const div = document.querySelector("div.el-autocomplete") //fofa input div
-  div.insertAdjacentElement("afterend", button1) //insert knife button1
-  div.insertAdjacentElement("afterend", button2) //sword button2
-  button1.addEventListener("click", () => {
-    const hosts = new Set()
-    document.querySelectorAll("span.aSpan > a").forEach(host => {
-      hosts.add(host.textContent.trim())
-    })
+  const div = document.querySelector("div.el-autocomplete")
+  div.insertAdjacentElement("afterend", button)
+  button.addEventListener("click", () => {
     let qbase64 = A2B(new URL(location.href).searchParams.get("qbase64"))
-    hosts.forEach(host => {
-      qbase64 += ` && host!="${host}"`
-    })
-    qbase64 = B2A(qbase64)
-    const url = new URL(location.href)
-    url.searchParams.set("qbase64", qbase64)
-    location.replace(url.href)
-  })
-  button2.addEventListener("click", () => {
-    const titles = new Set()
-    document.querySelectorAll("p.max-tow-row").forEach(title => {
-      titles.add(title.textContent)
-    })
-    let qbase64 = A2B(new URL(location.href).searchParams.get("qbase64"))
-    titles.forEach(title => {
-      //ignore empty title because many different targets set empty title
-      (title != "") && (qbase64 += ` && title!="${title}"`)
-    })
+    const titleNodes = document.querySelectorAll("p.max-tow-row") //doms having title information
+    const hostNodes = document.querySelectorAll("span.aSpan > a") //doms having host information
+    const length = titleNodes.length
+    const existMap = new Set() //judge if the title exist already
+    for (let i = 0; i < length; i++) {
+      const title = titleNodes[i].textContent
+      if (title == "") { //title if empty, use host to filter
+        const host = hostNodes[i].textContent.trim()
+        qbase64 += ` && host!="${host}"`
+      } else if (!existMap.has(title)) { //title is fresh, filter it
+        qbase64 += ` && title!="${title}"`
+        existMap.add(title)
+      }
+    }
     qbase64 = B2A(qbase64)
     const url = new URL(location.href)
     url.searchParams.set("qbase64", qbase64)
@@ -62,23 +53,14 @@ style.innerHTML = `
   cursor: pointer;
   transform: rotate(135deg);
 }
-.knife {
-  margin-left: 20px;
-}
-.sword {
-  margin-left: 70px;
-}`
+`
 document.head.appendChild(style)
 
-const button1 = document.createElement("button")
-button1.className = "conix-button knife"
-button1.textContent = "🗡️"
-button1.title = "Kill This Page By Host"
+const button = document.createElement("button")
+button.className = "conix-button"
+button.textContent = "🗡️"
+button.title = "Kill What You Have Tested Intelligently"
 
-const button2 = document.createElement("button")
-button2.className = "conix-button sword"
-button2.textContent = "⚔️"
-button2.title = "Kill All Same Title"
 /**
  * Binary To Ascii (Palin To Base64) supporting Chinese
  * @param {string} str 
