@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         fofa-filter
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  fofa过滤器
 // @author       Wuuconix
 // @match        https://fofa.info/result*
@@ -20,12 +20,12 @@ setTimeout(() => {
     const length = titleNodes.length
     const existMap = new Set() //judge if the title exist already
     for (let i = 0; i < length; i++) {
-      const title = titleNodes[i].textContent
+      const title = titleNodes[i].textContent.trim()
       if (title == "") { //title if empty, use host to filter
         const host = hostNodes[i].textContent.trim()
-        qbase64 += ` && host!="${host}"`
+        qbase64 += `&&host!="${host}"`
       } else if (!existMap.has(title)) { //title is fresh, filter it
-        qbase64 += ` && title!="${title}"`
+        qbase64 += `&&title!="${title}"`
         existMap.add(title)
       }
     }
