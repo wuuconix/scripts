@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         beian-killer.js
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  ICP备案网自动域名爬取
 // @author       wuuconix
 // @match        https://beian.miit.gov.cn/*
@@ -55,7 +55,7 @@ const start = async () => {
         if (i == pages - 1) {
             console.log(`爬虫完毕! 总共爬取 ${i * 40 + detailBtns.length}个域名，去重和得到 ${domains.size} 个有效域名`)
             const title = document.querySelector("#app > div > header > div.search > div > div > input").value
-            const result = `# ${title}\n\n<details>\n${[...domains].join("\n")}\n</details>\n\n`
+            const result = `# ${title}\n\n${[...domains].join("\n")}`
             console.log(result)
             await navigator.clipboard.writeText(result)
             console.log("成功复制进入剪切板")
