@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         fofa-filter
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  fofa过滤器
 // @author       Wuuconix
 // @match        https://fofa.info/result*
@@ -15,8 +15,8 @@ setTimeout(() => {
   div.insertAdjacentElement("afterend", button)
   button.addEventListener("click", () => {
     let qbase64 = A2B(new URL(location.href).searchParams.get("qbase64"))
-    const titleNodes = document.querySelectorAll("p.max-tow-row") //doms having title information
-    const hostNodes = document.querySelectorAll("span.aSpan > a") //doms having host information
+    const titleNodes = document.querySelectorAll("p.hsxa-two-line") //doms having title information
+    const hostNodes = document.querySelectorAll("span.hsxa-host > a") //doms having host information
     const length = titleNodes.length
     const existMap = new Set() //judge if the title exist already
     for (let i = 0; i < length; i++) {
@@ -63,8 +63,8 @@ button.title = "Kill What You Have Tested Intelligently"
 
 /**
  * Binary To Ascii (Palin To Base64) supporting Chinese
- * @param {string} str 
- * @returns 
+ * @param {string} str
+ * @returns
  */
 function B2A(str) {
   return window.btoa(unescape(encodeURIComponent(str)))
@@ -72,8 +72,8 @@ function B2A(str) {
 
 /**
  * Ascii To Binary (Base64 To Plain) supporting Chinese
- * @param {string} str 
- * @returns 
+ * @param {string} str
+ * @returns
  */
 function A2B(str) {
   return decodeURIComponent(escape(window.atob(str)));
