@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddys_ad.js
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  广告隐藏
 // @author       wuuconix
 // @match        https://ddys.art/*
@@ -15,7 +15,7 @@
 const style = document.createElement("style")
 const map = {
   "ddys.art": ["#sajdhfbjwhe", "#iaujwnefhw", "#fkasjgf"],
-  "www.fantuanhd.com": ["#t-img-box", "#HMRichBox"],
+  "www.fantuanhd.com": ["#t-img-box", "#HMRichBox", "#note"],
   "api.goodjson.top": ["#adv_wrap_hh"]
 }
 style.innerHTML = `${map[window.location.host].join(",")} {
