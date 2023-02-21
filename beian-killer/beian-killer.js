@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         beian-killer.js
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  ICP备案网自动域名爬取
 // @author       wuuconix
 // @match        https://beian.miit.gov.cn/*
@@ -19,13 +19,13 @@ const domains = new Set()
 const start = async () => {
   const num = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > span.el-pagination__total").innerText.split(" ")[1]
   console.log(`资产数目: ${num}`)
-  const selectedLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item.selected.hover")
-  const fortyLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item:last-child")
   if (num > 10) {
     console.log("数目大于10 将切换至40条/页以提升爬取效率")
     const switchLi = document.querySelector("#app > div > section > div > div > div.listcont > div > div.el-pagination.is-background > span.el-pagination__sizes > div > div.el-input.el-input--mini.el-input--suffix")
     switchLi.click()
     await sleep(1)
+    const selectedLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item.selected")
+    const fortyLi = document.querySelector("body > div.el-select-dropdown.el-popper > div.el-scrollbar > div.el-select-dropdown__wrap.el-scrollbar__wrap > ul > li.el-select-dropdown__item:last-child")
     if (selectedLi != fortyLi) {
       fortyLi.click()
       console.log("自动切换到40条/页")
