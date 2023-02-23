@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         fofa-filter
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  fofa过滤器
 // @author       Wuuconix
 // @match        https://fofa.info/result*
@@ -40,7 +40,7 @@ const style = document.createElement("style")
 style.innerHTML = `
 .conix-button {
   position: absolute;
-  margin-left: 20px;
+  margin-left: -5px;
   height: 50px;
   padding: 0 10px;
   white-space: nowrap;
