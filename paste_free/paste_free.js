@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         paste_free
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  点击图标 即可自动读取剪切板中的内容进行搜索
 // @author       wuuconix
 // @match        https://fofa.info/result*
@@ -42,7 +42,7 @@ if (location.hostname == "fofa.info") {                     // fofa
   })
 } else if (/bing.com/.test(location.hostname)) {            // bing
   document.body.addEventListener("click", async (e) => {
-    if (e.target.className == "b_logo") {
+    if (["b_logoArea", "b_logo"].includes(e.target.className)) {
       e.preventDefault()
       const text = await navigator.clipboard.readText()
       const q = `site:${text}`
@@ -50,7 +50,7 @@ if (location.hostname == "fofa.info") {                     // fofa
     }
   })
   document.body.addEventListener("contextmenu", async (e) => {
-    if (e.target.className == "b_logo") {
+    if (["b_logoArea", "b_logo"].includes(e.target.className)) {
       e.preventDefault()
       const text = await navigator.clipboard.readText()
       const q = encodeURIComponent(`site:${text} & filetype: (pdf | doc | xls | ppt | csv)`)
