@@ -6,7 +6,7 @@ fofa对于普通用户只开放前60条数据的查看权限，如果目标资�
 
 **使用方法**:
 
-![image](https://gzw.sinaimg.cn/large/007YVyKcly1h6bw70t7asj30iv02wt9m.jpg)
+![image](https://sina.wuuconix.link/large/007YVyKcly1h6bw70t7asj30iv02wt9m.jpg)
 
 点击这把剑，即可把这一页已经检测过的记录智能过滤掉。
 
