@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         ddys_ad.js
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      0.10
 // @description  广告隐藏
 // @author       wuuconix
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=ddys.tv
 // @grant        none
 // @license      MIT
-// @downloadURL  https://update.greasyfork.org/scripts/449955/ddys_adjs.user.js
-// @updateURL    https://update.greasyfork.org/scripts/449955/ddys_adjs.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/449955/ddys_adjs.user.js
+// @updateURL https://update.greasyfork.org/scripts/449955/ddys_adjs.meta.js
 // ==/UserScript==
 
 /* https://gist.github.com/karlgroves/7544592 */
@@ -126,8 +126,7 @@ if (adList) {
     style.innerHTML = `${adList.join(",")} {
   width: 0px !important;
   height: 0px !important;
-  overflow: hidden !important;
-  visibility: none !important;
+  opacity: 0 !important;
   pointer-events: none !important;
 }`
     document.head.appendChild(style)
