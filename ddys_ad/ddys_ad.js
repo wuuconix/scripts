@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ddys_ad.js
 // @namespace    http://tampermonkey.net/
-// @version      0.10
+// @version      0.11
 // @description  广告隐藏
 // @author       wuuconix
 // @match        *://*/*
@@ -12,7 +12,68 @@
 // @updateURL https://update.greasyfork.org/scripts/449955/ddys_adjs.meta.js
 // ==/UserScript==
 
-/* https://gist.github.com/karlgroves/7544592 */
+/* 存储在本地的云端规则，用于提高过滤速度 */
+let adListCloud = localStorage.getItem("ddys_ad_cloud")
+if (adListCloud) {
+    adListCloud = JSON.parse(adListCloud)
+    filter(adListCloud)
+}
+
+/* 云端的过滤规则，存储于 https://gist.github.com/wuuconix/82b6b724694d773f455eac38202fcca8 */
+fetch(`https://mirror.ghproxy.com/https://gist.githubusercontent.com/wuuconix/82b6b724694d773f455eac38202fcca8/raw/ad.json?ts=${Date.now()}`).then(res => res.json()).then(res => {
+    filter(res[location.hostname])
+    localStorage.setItem("ddys_ad_cloud", JSON.stringify(res[location.hostname]))
+})
+
+/* 本地的过滤规则，存储于 localStorage 由用户通过ctrl+shift+鼠标左键 增加 */
+let adList = localStorage.getItem("ddys_ad")
+if (adList) {
+    adList = JSON.parse(adList)
+    filter(adList)
+}
+
+function filter(adList) {
+    if (!Array.isArray(adList) || adList.length == 0) {
+        return
+    }
+
+    const style = document.createElement("style")
+    style.innerHTML = `${adList.join(",")} {
+        width: 0px !important;
+        height: 0px !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }`
+
+    document.head.appendChild(style)
+}
+
+/* 支持 ctrl+shift+鼠标左键 选中某元素加入本地过滤规则中 */
+document.addEventListener("click", (e) => {
+    if (!e.ctrlKey || !e.shiftKey) {
+        return
+    }
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    const target = e.target
+    target.style.width="0px"
+    target.style.height="0px"
+
+    const jsPath = getDomPath(target)
+    let adList = localStorage.getItem("ddys_ad")
+
+    if (adList) {
+        adList = JSON.parse(adList)
+        adList.push(jsPath)
+        localStorage.setItem("ddys_ad", JSON.stringify(adList))
+    } else {
+        localStorage.setItem("ddys_ad", JSON.stringify([jsPath]))
+    }
+})
+
+/* 获取选中的某个元素的css路径 https://gist.github.com/karlgroves/7544592 */
 function getDomPath(el, noVerify) {
     // store the original element if verify is enabled. If it isn't, then don't even bother 
     // taking up any memory for it.
@@ -117,40 +178,3 @@ function getDomPath(el, noVerify) {
     // If we got here, then the matched element is the same element, then it's been verified.
     return result;
 }
-
-let adList = localStorage.getItem("ddys_ad")
-const style = document.createElement("style")
-
-if (adList) {
-    adList = JSON.parse(adList)
-    style.innerHTML = `${adList.join(",")} {
-  width: 0px !important;
-  height: 0px !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}`
-    document.head.appendChild(style)
-}
-
-document.addEventListener("click", (e) => {
-    if (!e.ctrlKey || !e.shiftKey) {
-        return
-    }
-
-    e.preventDefault()
-
-    const target = e.target
-    target.style.width="0px"
-    target.style.height="0px"
-
-    const jsPath = getDomPath(target)
-    let adList = localStorage.getItem("ddys_ad")
-
-    if (adList) {
-        adList = JSON.parse(adList)
-        adList.push(jsPath)
-        localStorage.setItem("ddys_ad", JSON.stringify(adList))
-    } else {
-        localStorage.setItem("ddys_ad", JSON.stringify([jsPath]))
-    }
-})
