@@ -22,7 +22,7 @@ if (adListCloud) {
 /* 云端的过滤规则，存储于 https://gist.github.com/wuuconix/82b6b724694d773f455eac38202fcca8 */
 fetch(`https://mirror.ghproxy.com/https://gist.githubusercontent.com/wuuconix/82b6b724694d773f455eac38202fcca8/raw/ad.json?ts=${Date.now()}`).then(res => res.json()).then(res => {
     filter(res[location.hostname])
-    localStorage.setItem("ddys_ad_cloud", JSON.stringify(res[location.hostname]))
+    localStorage.setItem("ddys_ad_cloud", JSON.stringify(res[location.hostname] ?? []))
 })
 
 /* 本地的过滤规则，存储于 localStorage 由用户通过ctrl+shift+鼠标左键 增加 */
